@@ -65,7 +65,9 @@ struct ChunkProcessor {
 
         var chunkStart = 0
         var chunkIndex = 0
-        var chunkDecoderState = TdtDecoderState.make()
+        var chunkDecoderState = TdtDecoderState.make(
+            decoderLayers: await manager.getDecoderLayers()
+        )
 
         while chunkStart < totalSamples {
             try Task.checkCancellation()
