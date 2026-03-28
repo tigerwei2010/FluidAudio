@@ -48,6 +48,8 @@ public enum StreamingChunkSize: Sendable {
 
     /// Number of audio samples per chunk
     /// Calculated from mel frames: (mel_frames - 1) * hop_length for center-padded mel spectrogram
+    /// computeFlat uses: numFrames = 1 + (audioCount + 2*(nFFT/2) - winLength) / hopLength
+    /// so chunkSamples = (melFrames - 1) * hopLength
     public var chunkSamples: Int {
         switch self {
         case .ms160: return 2560  // (17-1) * 160 = 2560 samples (160ms)
@@ -551,6 +553,39 @@ public actor StreamingEouAsrManager {
         let data = try JSONSerialization.data(withJSONObject: outputData, options: .prettyPrinted)
         try data.write(to: url)
         logger.info("Dumped \(debugFeatureBuffer.count) features to \(url.path)")
+    }
+}
+
+// MARK: - StreamingAsrEngine Conformance
+
+extension StreamingEouAsrManager: StreamingAsrEngine {
+    public var displayName: String {
+        "Parakeet EOU 120M (\(chunkSize.durationMs)ms)"
+    }
+
+    public func loadModels() async throws {
+        try await loadModelsFromHuggingFace()
+    }
+
+    public func processBufferedAudio() async throws {
+        while audioBuffer.count >= chunkSamples {
+            let chunk = Array(audioBuffer.prefix(chunkSamples))
+            let samplesToShift = shiftSamples
+            try await processChunkAndDecode(chunk)
+            let actualShift = min(samplesToShift, audioBuffer.count)
+            if actualShift > 0 {
+                audioBuffer.removeFirst(actualShift)
+            }
+        }
+    }
+
+    public func setPartialTranscriptCallback(_ callback: @escaping @Sendable (String) -> Void) {
+        self.partialCallback = callback
+    }
+
+    public func getPartialTranscript() -> String {
+        guard let tokenizer = tokenizer else { return "" }
+        return tokenizer.decode(ids: accumulatedTokenIds)
     }
 }
 
