@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "FluidAudio"
-  spec.version      = "0.12.2"
+  spec.version      = "0.13.6"
   spec.summary      = "Speaker diarization, voice-activity-detection and transcription with CoreML"
   spec.description  = <<-DESC
                        Fluid Audio is a Swift SDK for fully local, low-latency audio AI on Apple devices,
@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = "17.0"
   spec.osx.deployment_target = "14.0"
 
-  spec.source       = { :git => "https://github.com/FluidInference/FluidAudio.git", :tag => "v#{spec.version}" }
+  spec.source       = { :git => "https://github.com/tigerwei2010/FluidAudio.git", :tag => "v#{spec.version}" }
   # CocoaPods sets SWIFT_VERSION based on this list; use values Xcode recognizes.
   spec.swift_versions = ["6.0"]
 
