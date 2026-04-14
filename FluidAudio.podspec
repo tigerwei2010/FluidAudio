@@ -26,7 +26,8 @@ Pod::Spec.new do |spec|
     'EXCLUDED_ARCHS[sdk=macosx*]' => 'x86_64',
     'ARCHS[sdk=iphonesimulator*]' => 'arm64',
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386 x86_64',
-    'ARCHS[sdk=iphoneos*]' => 'arm64'
+    'ARCHS[sdk=iphoneos*]' => 'arm64',
+    'SWIFT_INCLUDE_PATHS' => '$(PODS_TARGET_SRCROOT)/Sources/MachTaskSelfWrapper/include'
   }
 
   spec.user_target_xcconfig = {
@@ -53,9 +54,6 @@ Pod::Spec.new do |spec|
     mach.public_header_files = "Sources/MachTaskSelfWrapper/include/MachTaskSelf.h"
     mach.header_mappings_dir = "Sources/MachTaskSelfWrapper"
     mach.preserve_paths = "Sources/MachTaskSelfWrapper/include/module.modulemap"
-    mach.pod_target_xcconfig = {
-      'SWIFT_INCLUDE_PATHS' => '$(PODS_TARGET_SRCROOT)/Sources/MachTaskSelfWrapper/include'
-    }
   end
 
   spec.subspec "Core" do |core|
