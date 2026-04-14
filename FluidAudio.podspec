@@ -54,7 +54,7 @@ Pod::Spec.new do |spec|
     mach.header_mappings_dir = "Sources/MachTaskSelfWrapper"
     mach.preserve_paths = "Sources/MachTaskSelfWrapper/include/module.modulemap"
     mach.pod_target_xcconfig = {
-      'MODULEMAP_FILE' => '${PODS_TARGET_SRCROOT}/Sources/MachTaskSelfWrapper/include/module.modulemap'
+      'SWIFT_INCLUDE_PATHS' => '$(PODS_TARGET_SRCROOT)/Sources/MachTaskSelfWrapper/include'
     }
   end
 
