@@ -624,9 +624,9 @@ public enum ModelNames {
                 // Use v1 models on all platforms - v2 has source_noise issues
                 switch self {
                 case .fiveSecond:
-                    return "kokoro_21_5s.mlmodelc"
+                    return "kokoro_24_5s.mlmodelc"
                 case .fifteenSecond:
-                    return "kokoro_21_15s.mlmodelc"
+                    return "kokoro_24_15s.mlmodelc"
                 }
             }
 
